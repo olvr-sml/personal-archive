@@ -59,7 +59,7 @@
             width: 50px;
             height: 50px;
             border: 4px solid var(--text-main);
-            border-radius: 50% 50% 50% 0; /* Replica o formato estilizado do logo da imagem */
+            border-radius: 50% 50% 50% 0; /* Formato estilizado do logo */
         }
 
         nav {
@@ -171,25 +171,25 @@
         .bottom-links a:first-child { margin-left: 0; }
         .bottom-links span { color: var(--text-muted); }
 
-        /* Coluna da Direita: Composição Visual */
+        /* Coluna da Direita: Composição Visual (X e Círculo) */
         .visual-content {
             position: absolute;
             right: 5vw;
             top: 50%;
             transform: translateY(-50%);
-            width: 600px;
-            height: 600px;
+            width: 400px; /* Reduzido de 600px */
+            height: 400px; /* Reduzido de 600px */
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1;
-            pointer-events: none; /* Evita que a imagem bloqueie cliques */
+            pointer-events: none; /* Evita que o elemento bloqueie cliques */
         }
 
         .white-circle {
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 350px; /* Reduzido de 500px */
+            height: 350px; /* Reduzido de 500px */
             background-color: var(--circle-color);
             border-radius: 50%;
             z-index: 1;
@@ -197,23 +197,12 @@
 
         .big-x {
             position: absolute;
-            font-size: 40rem;
+            font-size: 20rem; /* Reduzido de 40rem */
             font-weight: 900;
             line-height: 1;
             color: var(--text-main);
             font-family: Arial, sans-serif;
             z-index: 2;
-        }
-
-        /* Placeholder para a estátua/imagem */
-        .sculpture-img {
-            position: absolute;
-            z-index: 3;
-            height: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            /* Descomente a linha abaixo para ver a silhueta caso não tenha a imagem ainda */
-            /* filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.1)); */
         }
 
         /* Scroll Down (Direita) */
@@ -302,6 +291,13 @@
                 display: none; /* Mantive oculto pois o scroll vertical em mobile já é intuitivo */
             }
         }
+
+        /* REMOÇÃO DO X EM DISPOSITIVOS MENORES */
+        @media (max-width: 768px) {
+            .visual-content {
+                display: none; /* Remove completamente o X e o círculo em celulares/mobile */
+            }
+        }
     </style>
 </head>
 <body>
@@ -328,7 +324,6 @@
             <div class="visual-content">
                 <div class="white-circle"></div>
                 <div class="big-x">X</div>
-                <img src="" alt="" class="sculpture-img">
             </div>
         </main>
 
