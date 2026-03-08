@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives - Personal Archive</title>
+    <style>
+        :root {
+            --bg-color: #fcfcfc;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --accent-gray: #e5e5e5;
+            --border-color: #dddddd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container Principal */
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 5vw;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Cabeçalho e Navegação */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--text-main);
+            border-radius: 50% 50% 50% 0;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        nav a.active::after {
+            content: "•";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+        }
+
+        /* Seção Principal */
+        main {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: flex-start; /* Alinhado à esquerda */
+            position: relative;
+            z-index: 2;
+            margin-top: 5vh;
+        }
+
+        .text-content {
+            width: 100%;
+            max-width: 800px;
+            z-index: 3;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            max-width: 450px;
+        }
+
+        /* Lista de Arquivos (Master Directory) */
+        .archive-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-top: 2px solid var(--text-main);
+        }
+
+        .archive-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-main);
+            transition: padding-left 0.3s ease;
+        }
+
+        .archive-item:hover {
+            padding-left: 20px;
+            border-bottom-color: var(--text-main);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .archive-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .archive-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .archive-arrow {
+            font-size: 2rem;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .archive-item:hover .archive-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Links do Rodapé Esquerdo */
+        .bottom-links {
+            position: absolute;
+            bottom: 40px;
+            left: 5vw;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .bottom-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-muted);
+            padding-bottom: 2px;
+            margin: 0 5px;
+        }
+
+        .bottom-links a:first-child { margin-left: 0; }
+        .bottom-links span { color: var(--text-muted); }
+
+        /* Scroll Down (Direita) */
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            right: 5vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .scroll-down span {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background-color: var(--text-main);
+            position: relative;
+        }
+
+        .scroll-line::after {
+            content: "↓";
+            position: absolute;
+            bottom: -15px;
+            left: -4px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .container { padding: 20px 5vw; }
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            nav {
+                display: flex;
+                gap: 1.5rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            main {
+                margin-top: 40px;
+                justify-content: center;
+            }
+            .text-content {
+                display: flex;
+                flex-direction: column;
+            }
+            h1 { text-align: center; }
+            p.subtitle { text-align: center; margin: 0 auto 3rem auto; }
+            
+            .archive-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1.5rem 0;
+            }
+            .archive-item:hover { padding-left: 0; }
+            .archive-arrow { display: none; }
+            
+            .bottom-links {
+                position: relative;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                justify-content: center;
+                margin-top: 50px;
+                width: 100%;
+            }
+            .scroll-down { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <a href="index.html" class="logo">pa</a>
+            <nav>
+                <a href="index.html">HOME</a>
+                <a href="#" class="active">ARCHIVES</a>
+                <a href="reading-plans.html">PLANS</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="text-content">
+                <h1>archives.</h1>
+                <p class="subtitle">Master directory for all internal documents, notes, and trackers.</p>
+                
+                <div class="archive-list">
+                    <a href="bible.html" class="archive-item">
+                        <div class="item-info">
+                            <span class="archive-title">BIBLE</span>
+                            <span class="archive-desc">Study notes, reflections, and chapter summaries</span>
+                        </div>
+                        <span class="archive-arrow">&rarr;</span>
+                    </a>
+
+                    <a href="investments.html" class="archive-item">
+                        <div class="item-info">
+                            <span class="archive-title">INVESTMENTS</span>
+                            <span class="archive-desc">Fundamentalist ETFs, asset allocation, and portfolio</span>
+                        </div>
+                        <span class="archive-arrow">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <div class="bottom-links">
+            <a href="#">Links</a> <span>/</span> 
+            <a href="#">Resources</a>
+        </div>
+
+        <div class="scroll-down">
+            <span>SCROLL DOWN</span>
+            <div class="scroll-line"></div>
+        </div>
+    </div>
+
+</body>
+</html>
