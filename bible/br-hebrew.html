@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Leitura Bíblica 2026</title>
+    <style>
+        :root {
+            --primary: #2563eb; /* Azul moderno */
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin: 0 0 10px 0;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            background: var(--bg);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        /* Estilo das Linhas */
+        tr {
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Coluna do Checkbox (o [ ]) */
+        td:first-child {
+            width: 40px;
+            color: var(--text-muted);
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            user-select: none;
+        }
+
+        /* Coluna da Data */
+        td:nth-child(2) {
+            width: 130px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        /* Coluna da Referência */
+        td:nth-child(3) a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        td:nth-child(3) a:hover {
+            background-color: #eff6ff;
+            text-decoration: underline;
+        }
+
+        .smalltextstyle {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 5px;
+        }
+
+        /* Estado "Lido" (Check) */
+        tr.checked {
+            background-color: var(--success-bg);
+        }
+
+        tr.checked td:first-child {
+            color: var(--success-text);
+            content: "✓"; /* Visual trick handled in JS usually, but color helps */
+        }
+
+        tr.checked td:nth-child(2),
+        tr.checked td:nth-child(3) a {
+            color: var(--success-text);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* Botões de Ação */
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--border);
+            color: var(--text-main);
+        }
+
+        /* Responsividade para Celular */
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            td:nth-child(2) { width: 90px; font-size: 0.85rem; }
+            h1 { font-size: 1.4rem; }
+            .subtitle { font-size: 0.8rem; }
+        }
+
+        /* Estilo para Impressão */
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; max-width: 100%; padding: 0; }
+            .actions { display: none; }
+            tr.checked { background-color: transparent !important; }
+            tr.checked td { text-decoration: none !important; color: black !important; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Plano de Leitura: Bíblia Hebraica</h1>
+        <div class="subtitle">
+            2 Mar 2026 — 31 Dez 2026 • Ritmo: 3 a 4 caps/dia
+        </div>
+    </header>
+
+    <table id="readingTable">
+        <colgroup><col style="width: 30pt" /><col style="width: 100pt" /></colgroup>
+        
+        <tr><td>[ ]</td><td>2 Mar 2026</td><td><p><a href="https://ref.ly/Ge1-3;bb-sbb-ra">Gn 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Mar 2026</td><td><p><a href="https://ref.ly/Ge4-6;bb-sbb-ra">Gn 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Mar 2026</td><td><p><a href="https://ref.ly/Ge7-9;bb-sbb-ra">Gn 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Mar 2026</td><td><p><a href="https://ref.ly/Ge10-12;bb-sbb-ra">Gn 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Mar 2026</td><td><p><a href="https://ref.ly/Ge13-15;bb-sbb-ra">Gn 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Mar 2026</td><td><p><a href="https://ref.ly/Ge16-18;bb-sbb-ra">Gn 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Mar 2026</td><td><p><a href="https://ref.ly/Ge19-21;bb-sbb-ra">Gn 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Mar 2026</td><td><p><a href="https://ref.ly/Ge22-24;bb-sbb-ra">Gn 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Mar 2026</td><td><p><a href="https://ref.ly/Ge25-27;bb-sbb-ra">Gn 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Mar 2026</td><td><p><a href="https://ref.ly/Ge28-30;bb-sbb-ra">Gn 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Mar 2026</td><td><p><a href="https://ref.ly/Ge31-33;bb-sbb-ra">Gn 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Mar 2026</td><td><p><a href="https://ref.ly/Ge34-36;bb-sbb-ra">Gn 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Mar 2026</td><td><p><a href="https://ref.ly/Ge37-39;bb-sbb-ra">Gn 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Mar 2026</td><td><p><a href="https://ref.ly/Ge40-42;bb-sbb-ra">Gn 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Mar 2026</td><td><p><a href="https://ref.ly/Ge43-45;bb-sbb-ra">Gn 43–45</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Mar 2026</td><td><p><a href="https://ref.ly/Ge46-48;bb-sbb-ra">Gn 46–48</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Mar 2026</td><td><p><a href="https://ref.ly/Ge49-50;bb-sbb-ra">Gn 49–50</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>19 Mar 2026</td><td><p><a href="https://ref.ly/Ex1-3;bb-sbb-ra">Êx 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Mar 2026</td><td><p><a href="https://ref.ly/Ex4-6;bb-sbb-ra">Êx 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Mar 2026</td><td><p><a href="https://ref.ly/Ex7-9;bb-sbb-ra">Êx 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Mar 2026</td><td><p><a href="https://ref.ly/Ex10-12;bb-sbb-ra">Êx 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Mar 2026</td><td><p><a href="https://ref.ly/Ex13-15;bb-sbb-ra">Êx 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Mar 2026</td><td><p><a href="https://ref.ly/Ex16-18;bb-sbb-ra">Êx 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Mar 2026</td><td><p><a href="https://ref.ly/Ex19-21;bb-sbb-ra">Êx 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Mar 2026</td><td><p><a href="https://ref.ly/Ex22-24;bb-sbb-ra">Êx 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Mar 2026</td><td><p><a href="https://ref.ly/Ex25-27;bb-sbb-ra">Êx 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Mar 2026</td><td><p><a href="https://ref.ly/Ex28-30;bb-sbb-ra">Êx 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Mar 2026</td><td><p><a href="https://ref.ly/Ex31-33;bb-sbb-ra">Êx 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Mar 2026</td><td><p><a href="https://ref.ly/Ex34-36;bb-sbb-ra">Êx 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Mar 2026</td><td><p><a href="https://ref.ly/Ex37-40;bb-sbb-ra">Êx 37–40</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>1 Abr 2026</td><td><p><a href="https://ref.ly/Le1-3;bb-sbb-ra">Lv 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Abr 2026</td><td><p><a href="https://ref.ly/Le4-6;bb-sbb-ra">Lv 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Abr 2026</td><td><p><a href="https://ref.ly/Le7-9;bb-sbb-ra">Lv 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Abr 2026</td><td><p><a href="https://ref.ly/Le10-12;bb-sbb-ra">Lv 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Abr 2026</td><td><p><a href="https://ref.ly/Le13-15;bb-sbb-ra">Lv 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Abr 2026</td><td><p><a href="https://ref.ly/Le16-18;bb-sbb-ra">Lv 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Abr 2026</td><td><p><a href="https://ref.ly/Le19-21;bb-sbb-ra">Lv 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Abr 2026</td><td><p><a href="https://ref.ly/Le22-24;bb-sbb-ra">Lv 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Abr 2026</td><td><p><a href="https://ref.ly/Le25-27;bb-sbb-ra">Lv 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>10 Abr 2026</td><td><p><a href="https://ref.ly/Nu1-3;bb-sbb-ra">Nm 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Abr 2026</td><td><p><a href="https://ref.ly/Nu4-6;bb-sbb-ra">Nm 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Abr 2026</td><td><p><a href="https://ref.ly/Nu7-9;bb-sbb-ra">Nm 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Abr 2026</td><td><p><a href="https://ref.ly/Nu10-12;bb-sbb-ra">Nm 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Abr 2026</td><td><p><a href="https://ref.ly/Nu13-15;bb-sbb-ra">Nm 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Abr 2026</td><td><p><a href="https://ref.ly/Nu16-18;bb-sbb-ra">Nm 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Abr 2026</td><td><p><a href="https://ref.ly/Nu19-21;bb-sbb-ra">Nm 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Abr 2026</td><td><p><a href="https://ref.ly/Nu22-24;bb-sbb-ra">Nm 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Abr 2026</td><td><p><a href="https://ref.ly/Nu25-27;bb-sbb-ra">Nm 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Abr 2026</td><td><p><a href="https://ref.ly/Nu28-30;bb-sbb-ra">Nm 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Abr 2026</td><td><p><a href="https://ref.ly/Nu31-33;bb-sbb-ra">Nm 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Abr 2026</td><td><p><a href="https://ref.ly/Nu34-36;bb-sbb-ra">Nm 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>22 Abr 2026</td><td><p><a href="https://ref.ly/Dt1-3;bb-sbb-ra">Dt 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Abr 2026</td><td><p><a href="https://ref.ly/Dt4-6;bb-sbb-ra">Dt 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Abr 2026</td><td><p><a href="https://ref.ly/Dt7-9;bb-sbb-ra">Dt 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Abr 2026</td><td><p><a href="https://ref.ly/Dt10-12;bb-sbb-ra">Dt 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Abr 2026</td><td><p><a href="https://ref.ly/Dt13-15;bb-sbb-ra">Dt 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Abr 2026</td><td><p><a href="https://ref.ly/Dt16-18;bb-sbb-ra">Dt 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Abr 2026</td><td><p><a href="https://ref.ly/Dt19-21;bb-sbb-ra">Dt 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Abr 2026</td><td><p><a href="https://ref.ly/Dt22-24;bb-sbb-ra">Dt 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Abr 2026</td><td><p><a href="https://ref.ly/Dt25-27;bb-sbb-ra">Dt 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Mai 2026</td><td><p><a href="https://ref.ly/Dt28-30;bb-sbb-ra">Dt 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Mai 2026</td><td><p><a href="https://ref.ly/Dt31-34;bb-sbb-ra">Dt 31–34</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>3 Mai 2026</td><td><p><a href="https://ref.ly/Jos1-3;bb-sbb-ra">Js 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Mai 2026</td><td><p><a href="https://ref.ly/Jos4-6;bb-sbb-ra">Js 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Mai 2026</td><td><p><a href="https://ref.ly/Jos7-9;bb-sbb-ra">Js 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Mai 2026</td><td><p><a href="https://ref.ly/Jos10-12;bb-sbb-ra">Js 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Mai 2026</td><td><p><a href="https://ref.ly/Jos13-15;bb-sbb-ra">Js 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Mai 2026</td><td><p><a href="https://ref.ly/Jos16-18;bb-sbb-ra">Js 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Mai 2026</td><td><p><a href="https://ref.ly/Jos19-21;bb-sbb-ra">Js 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Mai 2026</td><td><p><a href="https://ref.ly/Jos22-24;bb-sbb-ra">Js 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>11 Mai 2026</td><td><p><a href="https://ref.ly/Jdg1-3;bb-sbb-ra">Jz 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Mai 2026</td><td><p><a href="https://ref.ly/Jdg4-6;bb-sbb-ra">Jz 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Mai 2026</td><td><p><a href="https://ref.ly/Jdg7-9;bb-sbb-ra">Jz 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Mai 2026</td><td><p><a href="https://ref.ly/Jdg10-12;bb-sbb-ra">Jz 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Mai 2026</td><td><p><a href="https://ref.ly/Jdg13-15;bb-sbb-ra">Jz 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Mai 2026</td><td><p><a href="https://ref.ly/Jdg16-18;bb-sbb-ra">Jz 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Mai 2026</td><td><p><a href="https://ref.ly/Jdg19-21;bb-sbb-ra">Jz 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>18 Mai 2026</td><td><p><a href="https://ref.ly/1Sa1-3;bb-sbb-ra">1Sm 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Mai 2026</td><td><p><a href="https://ref.ly/1Sa4-6;bb-sbb-ra">1Sm 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Mai 2026</td><td><p><a href="https://ref.ly/1Sa7-9;bb-sbb-ra">1Sm 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Mai 2026</td><td><p><a href="https://ref.ly/1Sa10-12;bb-sbb-ra">1Sm 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Mai 2026</td><td><p><a href="https://ref.ly/1Sa13-15;bb-sbb-ra">1Sm 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Mai 2026</td><td><p><a href="https://ref.ly/1Sa16-18;bb-sbb-ra">1Sm 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Mai 2026</td><td><p><a href="https://ref.ly/1Sa19-21;bb-sbb-ra">1Sm 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Mai 2026</td><td><p><a href="https://ref.ly/1Sa22-24;bb-sbb-ra">1Sm 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Mai 2026</td><td><p><a href="https://ref.ly/1Sa25-27;bb-sbb-ra">1Sm 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Mai 2026</td><td><p><a href="https://ref.ly/1Sa28-31;bb-sbb-ra">1Sm 28–31</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>28 Mai 2026</td><td><p><a href="https://ref.ly/2Sa1-3;bb-sbb-ra">2Sm 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Mai 2026</td><td><p><a href="https://ref.ly/2Sa4-6;bb-sbb-ra">2Sm 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Mai 2026</td><td><p><a href="https://ref.ly/2Sa7-9;bb-sbb-ra">2Sm 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Mai 2026</td><td><p><a href="https://ref.ly/2Sa10-12;bb-sbb-ra">2Sm 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Jun 2026</td><td><p><a href="https://ref.ly/2Sa13-15;bb-sbb-ra">2Sm 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Jun 2026</td><td><p><a href="https://ref.ly/2Sa16-18;bb-sbb-ra">2Sm 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Jun 2026</td><td><p><a href="https://ref.ly/2Sa19-21;bb-sbb-ra">2Sm 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Jun 2026</td><td><p><a href="https://ref.ly/2Sa22-24;bb-sbb-ra">2Sm 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>5 Jun 2026</td><td><p><a href="https://ref.ly/1Ki1-3;bb-sbb-ra">1Rs 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Jun 2026</td><td><p><a href="https://ref.ly/1Ki4-6;bb-sbb-ra">1Rs 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Jun 2026</td><td><p><a href="https://ref.ly/1Ki7-9;bb-sbb-ra">1Rs 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Jun 2026</td><td><p><a href="https://ref.ly/1Ki10-12;bb-sbb-ra">1Rs 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Jun 2026</td><td><p><a href="https://ref.ly/1Ki13-15;bb-sbb-ra">1Rs 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Jun 2026</td><td><p><a href="https://ref.ly/1Ki16-18;bb-sbb-ra">1Rs 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Jun 2026</td><td><p><a href="https://ref.ly/1Ki19-22;bb-sbb-ra">1Rs 19–22</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>12 Jun 2026</td><td><p><a href="https://ref.ly/2Ki1-3;bb-sbb-ra">2Rs 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Jun 2026</td><td><p><a href="https://ref.ly/2Ki4-6;bb-sbb-ra">2Rs 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Jun 2026</td><td><p><a href="https://ref.ly/2Ki7-9;bb-sbb-ra">2Rs 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Jun 2026</td><td><p><a href="https://ref.ly/2Ki10-12;bb-sbb-ra">2Rs 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Jun 2026</td><td><p><a href="https://ref.ly/2Ki13-15;bb-sbb-ra">2Rs 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Jun 2026</td><td><p><a href="https://ref.ly/2Ki16-18;bb-sbb-ra">2Rs 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Jun 2026</td><td><p><a href="https://ref.ly/2Ki19-21;bb-sbb-ra">2Rs 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Jun 2026</td><td><p><a href="https://ref.ly/2Ki22-25;bb-sbb-ra">2Rs 22–25</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>20 Jun 2026</td><td><p><a href="https://ref.ly/Is1-3;bb-sbb-ra">Is 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Jun 2026</td><td><p><a href="https://ref.ly/Is4-6;bb-sbb-ra">Is 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Jun 2026</td><td><p><a href="https://ref.ly/Is7-9;bb-sbb-ra">Is 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Jun 2026</td><td><p><a href="https://ref.ly/Is10-12;bb-sbb-ra">Is 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Jun 2026</td><td><p><a href="https://ref.ly/Is13-15;bb-sbb-ra">Is 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Jun 2026</td><td><p><a href="https://ref.ly/Is16-18;bb-sbb-ra">Is 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Jun 2026</td><td><p><a href="https://ref.ly/Is19-21;bb-sbb-ra">Is 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Jun 2026</td><td><p><a href="https://ref.ly/Is22-24;bb-sbb-ra">Is 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Jun 2026</td><td><p><a href="https://ref.ly/Is25-27;bb-sbb-ra">Is 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Jun 2026</td><td><p><a href="https://ref.ly/Is28-30;bb-sbb-ra">Is 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Jun 2026</td><td><p><a href="https://ref.ly/Is31-33;bb-sbb-ra">Is 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Jul 2026</td><td><p><a href="https://ref.ly/Is34-36;bb-sbb-ra">Is 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Jul 2026</td><td><p><a href="https://ref.ly/Is37-39;bb-sbb-ra">Is 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Jul 2026</td><td><p><a href="https://ref.ly/Is40-42;bb-sbb-ra">Is 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Jul 2026</td><td><p><a href="https://ref.ly/Is43-45;bb-sbb-ra">Is 43–45</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Jul 2026</td><td><p><a href="https://ref.ly/Is46-48;bb-sbb-ra">Is 46–48</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Jul 2026</td><td><p><a href="https://ref.ly/Is49-51;bb-sbb-ra">Is 49–51</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Jul 2026</td><td><p><a href="https://ref.ly/Is52-54;bb-sbb-ra">Is 52–54</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Jul 2026</td><td><p><a href="https://ref.ly/Is55-57;bb-sbb-ra">Is 55–57</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Jul 2026</td><td><p><a href="https://ref.ly/Is58-60;bb-sbb-ra">Is 58–60</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Jul 2026</td><td><p><a href="https://ref.ly/Is61-63;bb-sbb-ra">Is 61–63</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Jul 2026</td><td><p><a href="https://ref.ly/Is64-66;bb-sbb-ra">Is 64–66</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>12 Jul 2026</td><td><p><a href="https://ref.ly/Je1-3;bb-sbb-ra">Jr 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Jul 2026</td><td><p><a href="https://ref.ly/Je4-6;bb-sbb-ra">Jr 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Jul 2026</td><td><p><a href="https://ref.ly/Je7-9;bb-sbb-ra">Jr 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Jul 2026</td><td><p><a href="https://ref.ly/Je10-12;bb-sbb-ra">Jr 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Jul 2026</td><td><p><a href="https://ref.ly/Je13-15;bb-sbb-ra">Jr 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Jul 2026</td><td><p><a href="https://ref.ly/Je16-18;bb-sbb-ra">Jr 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Jul 2026</td><td><p><a href="https://ref.ly/Je19-21;bb-sbb-ra">Jr 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Jul 2026</td><td><p><a href="https://ref.ly/Je22-24;bb-sbb-ra">Jr 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Jul 2026</td><td><p><a href="https://ref.ly/Je25-27;bb-sbb-ra">Jr 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Jul 2026</td><td><p><a href="https://ref.ly/Je28-30;bb-sbb-ra">Jr 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Jul 2026</td><td><p><a href="https://ref.ly/Je31-33;bb-sbb-ra">Jr 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Jul 2026</td><td><p><a href="https://ref.ly/Je34-36;bb-sbb-ra">Jr 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Jul 2026</td><td><p><a href="https://ref.ly/Je37-39;bb-sbb-ra">Jr 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Jul 2026</td><td><p><a href="https://ref.ly/Je40-42;bb-sbb-ra">Jr 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Jul 2026</td><td><p><a href="https://ref.ly/Je43-45;bb-sbb-ra">Jr 43–45</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Jul 2026</td><td><p><a href="https://ref.ly/Je46-48;bb-sbb-ra">Jr 46–48</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Jul 2026</td><td><p><a href="https://ref.ly/Je49-52;bb-sbb-ra">Jr 49–52</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>29 Jul 2026</td><td><p><a href="https://ref.ly/Eze1-3;bb-sbb-ra">Ez 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Jul 2026</td><td><p><a href="https://ref.ly/Eze4-6;bb-sbb-ra">Ez 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Jul 2026</td><td><p><a href="https://ref.ly/Eze7-9;bb-sbb-ra">Ez 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Ago 2026</td><td><p><a href="https://ref.ly/Eze10-12;bb-sbb-ra">Ez 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Ago 2026</td><td><p><a href="https://ref.ly/Eze13-15;bb-sbb-ra">Ez 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Ago 2026</td><td><p><a href="https://ref.ly/Eze16-18;bb-sbb-ra">Ez 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Ago 2026</td><td><p><a href="https://ref.ly/Eze19-21;bb-sbb-ra">Ez 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Ago 2026</td><td><p><a href="https://ref.ly/Eze22-24;bb-sbb-ra">Ez 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Ago 2026</td><td><p><a href="https://ref.ly/Eze25-27;bb-sbb-ra">Ez 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Ago 2026</td><td><p><a href="https://ref.ly/Eze28-30;bb-sbb-ra">Ez 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Ago 2026</td><td><p><a href="https://ref.ly/Eze31-33;bb-sbb-ra">Ez 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Ago 2026</td><td><p><a href="https://ref.ly/Eze34-36;bb-sbb-ra">Ez 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Ago 2026</td><td><p><a href="https://ref.ly/Eze37-39;bb-sbb-ra">Ez 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Ago 2026</td><td><p><a href="https://ref.ly/Eze40-42;bb-sbb-ra">Ez 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Ago 2026</td><td><p><a href="https://ref.ly/Eze43-45;bb-sbb-ra">Ez 43–45</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Ago 2026</td><td><p><a href="https://ref.ly/Eze46-48;bb-sbb-ra">Ez 46–48</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>14 Ago 2026</td><td><p><a href="https://ref.ly/Ho1-3;bb-sbb-ra">Os 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Ago 2026</td><td><p><a href="https://ref.ly/Ho4-6;bb-sbb-ra">Os 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Ago 2026</td><td><p><a href="https://ref.ly/Ho7-9;bb-sbb-ra">Os 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Ago 2026</td><td><p><a href="https://ref.ly/Ho10-12;bb-sbb-ra">Os 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Ago 2026</td><td><p><a href="https://ref.ly/Ho13-14;bb-sbb-ra">Os 13–14</a> <span class="smalltextstyle">ARA</span>, <a href="https://ref.ly/Joe1;bb-sbb-ra">Jl 1</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Ago 2026</td><td><p><a href="https://ref.ly/Joe2-3;bb-sbb-ra">Jl 2–3</a> <span class="smalltextstyle">ARA</span>, <a href="https://ref.ly/Am1;bb-sbb-ra">Am 1</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Ago 2026</td><td><p><a href="https://ref.ly/Am2-4;bb-sbb-ra">Am 2–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Ago 2026</td><td><p><a href="https://ref.ly/Am5-7;bb-sbb-ra">Am 5–7</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Ago 2026</td><td><p><a href="https://ref.ly/Am8-9;bb-sbb-ra">Am 8–9</a> <span class="smalltextstyle">ARA</span>, <a href="https://ref.ly/Ob1;bb-sbb-ra">Ob 1</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Ago 2026</td><td><p><a href="https://ref.ly/Jon1-4;bb-sbb-ra">Jn 1–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Ago 2026</td><td><p><a href="https://ref.ly/Mi1-3;bb-sbb-ra">Mq 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Ago 2026</td><td><p><a href="https://ref.ly/Mi4-7;bb-sbb-ra">Mq 4–7</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Ago 2026</td><td><p><a href="https://ref.ly/Na1-3;bb-sbb-ra">Na 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Ago 2026</td><td><p><a href="https://ref.ly/Hab1-3;bb-sbb-ra">Hc 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Ago 2026</td><td><p><a href="https://ref.ly/Zep1-3;bb-sbb-ra">Sf 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Ago 2026</td><td><p><a href="https://ref.ly/Hag1-2;bb-sbb-ra">Ag 1–2</a> <span class="smalltextstyle">ARA</span>, <a href="https://ref.ly/Zec1;bb-sbb-ra">Zc 1</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Ago 2026</td><td><p><a href="https://ref.ly/Zec2-4;bb-sbb-ra">Zc 2–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Ago 2026</td><td><p><a href="https://ref.ly/Zec5-7;bb-sbb-ra">Zc 5–7</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Set 2026</td><td><p><a href="https://ref.ly/Zec8-10;bb-sbb-ra">Zc 8–10</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Set 2026</td><td><p><a href="https://ref.ly/Zec11-14;bb-sbb-ra">Zc 11–14</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Set 2026</td><td><p><a href="https://ref.ly/Mal1-4;bb-sbb-ra">Ml 1–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>4 Set 2026</td><td><p><a href="https://ref.ly/Ps1-3;bb-sbb-ra">Sl 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Set 2026</td><td><p><a href="https://ref.ly/Ps4-6;bb-sbb-ra">Sl 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Set 2026</td><td><p><a href="https://ref.ly/Ps7-9;bb-sbb-ra">Sl 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Set 2026</td><td><p><a href="https://ref.ly/Ps10-12;bb-sbb-ra">Sl 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Set 2026</td><td><p><a href="https://ref.ly/Ps13-15;bb-sbb-ra">Sl 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Set 2026</td><td><p><a href="https://ref.ly/Ps16-18;bb-sbb-ra">Sl 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Set 2026</td><td><p><a href="https://ref.ly/Ps19-21;bb-sbb-ra">Sl 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Set 2026</td><td><p><a href="https://ref.ly/Ps22-24;bb-sbb-ra">Sl 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Set 2026</td><td><p><a href="https://ref.ly/Ps25-27;bb-sbb-ra">Sl 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Set 2026</td><td><p><a href="https://ref.ly/Ps28-30;bb-sbb-ra">Sl 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Set 2026</td><td><p><a href="https://ref.ly/Ps31-33;bb-sbb-ra">Sl 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Set 2026</td><td><p><a href="https://ref.ly/Ps34-36;bb-sbb-ra">Sl 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Set 2026</td><td><p><a href="https://ref.ly/Ps37-39;bb-sbb-ra">Sl 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Set 2026</td><td><p><a href="https://ref.ly/Ps40-42;bb-sbb-ra">Sl 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Set 2026</td><td><p><a href="https://ref.ly/Ps43-45;bb-sbb-ra">Sl 43–45</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Set 2026</td><td><p><a href="https://ref.ly/Ps46-48;bb-sbb-ra">Sl 46–48</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Set 2026</td><td><p><a href="https://ref.ly/Ps49-51;bb-sbb-ra">Sl 49–51</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Set 2026</td><td><p><a href="https://ref.ly/Ps52-54;bb-sbb-ra">Sl 52–54</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Set 2026</td><td><p><a href="https://ref.ly/Ps55-57;bb-sbb-ra">Sl 55–57</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Set 2026</td><td><p><a href="https://ref.ly/Ps58-60;bb-sbb-ra">Sl 58–60</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Set 2026</td><td><p><a href="https://ref.ly/Ps61-63;bb-sbb-ra">Sl 61–63</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Set 2026</td><td><p><a href="https://ref.ly/Ps64-66;bb-sbb-ra">Sl 64–66</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Set 2026</td><td><p><a href="https://ref.ly/Ps67-69;bb-sbb-ra">Sl 67–69</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Set 2026</td><td><p><a href="https://ref.ly/Ps70-72;bb-sbb-ra">Sl 70–72</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Set 2026</td><td><p><a href="https://ref.ly/Ps73-75;bb-sbb-ra">Sl 73–75</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Set 2026</td><td><p><a href="https://ref.ly/Ps76-78;bb-sbb-ra">Sl 76–78</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Set 2026</td><td><p><a href="https://ref.ly/Ps79-81;bb-sbb-ra">Sl 79–81</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Out 2026</td><td><p><a href="https://ref.ly/Ps82-84;bb-sbb-ra">Sl 82–84</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Out 2026</td><td><p><a href="https://ref.ly/Ps85-87;bb-sbb-ra">Sl 85–87</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Out 2026</td><td><p><a href="https://ref.ly/Ps88-90;bb-sbb-ra">Sl 88–90</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Out 2026</td><td><p><a href="https://ref.ly/Ps91-93;bb-sbb-ra">Sl 91–93</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Out 2026</td><td><p><a href="https://ref.ly/Ps94-96;bb-sbb-ra">Sl 94–96</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Out 2026</td><td><p><a href="https://ref.ly/Ps97-99;bb-sbb-ra">Sl 97–99</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Out 2026</td><td><p><a href="https://ref.ly/Ps100-102;bb-sbb-ra">Sl 100–102</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Out 2026</td><td><p><a href="https://ref.ly/Ps103-105;bb-sbb-ra">Sl 103–105</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Out 2026</td><td><p><a href="https://ref.ly/Ps106-108;bb-sbb-ra">Sl 106–108</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Out 2026</td><td><p><a href="https://ref.ly/Ps109-111;bb-sbb-ra">Sl 109–111</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Out 2026</td><td><p><a href="https://ref.ly/Ps112-114;bb-sbb-ra">Sl 112–114</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Out 2026</td><td><p><a href="https://ref.ly/Ps115-117;bb-sbb-ra">Sl 115–117</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Out 2026</td><td><p><a href="https://ref.ly/Ps118-119:64;bb-sbb-ra">Sl 118–119:64</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Out 2026</td><td><p><a href="https://ref.ly/Ps119:65-176;bb-sbb-ra">Sl 119:65–176</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Out 2026</td><td><p><a href="https://ref.ly/Ps120-123;bb-sbb-ra">Sl 120–123</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Out 2026</td><td><p><a href="https://ref.ly/Ps124-127;bb-sbb-ra">Sl 124–127</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Out 2026</td><td><p><a href="https://ref.ly/Ps128-131;bb-sbb-ra">Sl 128–131</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Out 2026</td><td><p><a href="https://ref.ly/Ps132-135;bb-sbb-ra">Sl 132–135</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Out 2026</td><td><p><a href="https://ref.ly/Ps136-138;bb-sbb-ra">Sl 136–138</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Out 2026</td><td><p><a href="https://ref.ly/Ps139-141;bb-sbb-ra">Sl 139–141</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Out 2026</td><td><p><a href="https://ref.ly/Ps142-144;bb-sbb-ra">Sl 142–144</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Out 2026</td><td><p><a href="https://ref.ly/Ps145-147;bb-sbb-ra">Sl 145–147</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Out 2026</td><td><p><a href="https://ref.ly/Ps148-150;bb-sbb-ra">Sl 148–150</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>24 Out 2026</td><td><p><a href="https://ref.ly/Pr1-3;bb-sbb-ra">Pv 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Out 2026</td><td><p><a href="https://ref.ly/Pr4-6;bb-sbb-ra">Pv 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Out 2026</td><td><p><a href="https://ref.ly/Pr7-9;bb-sbb-ra">Pv 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Out 2026</td><td><p><a href="https://ref.ly/Pr10-12;bb-sbb-ra">Pv 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Out 2026</td><td><p><a href="https://ref.ly/Pr13-15;bb-sbb-ra">Pv 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Out 2026</td><td><p><a href="https://ref.ly/Pr16-18;bb-sbb-ra">Pv 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Out 2026</td><td><p><a href="https://ref.ly/Pr19-21;bb-sbb-ra">Pv 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Out 2026</td><td><p><a href="https://ref.ly/Pr22-24;bb-sbb-ra">Pv 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Nov 2026</td><td><p><a href="https://ref.ly/Pr25-27;bb-sbb-ra">Pv 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Nov 2026</td><td><p><a href="https://ref.ly/Pr28-29;bb-sbb-ra">Pv 28–29</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Nov 2026</td><td><p><a href="https://ref.ly/Pr30-31;bb-sbb-ra">Pv 30–31</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>4 Nov 2026</td><td><p><a href="https://ref.ly/Job1-3;bb-sbb-ra">Jó 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Nov 2026</td><td><p><a href="https://ref.ly/Job4-6;bb-sbb-ra">Jó 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Nov 2026</td><td><p><a href="https://ref.ly/Job7-9;bb-sbb-ra">Jó 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Nov 2026</td><td><p><a href="https://ref.ly/Job10-12;bb-sbb-ra">Jó 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Nov 2026</td><td><p><a href="https://ref.ly/Job13-15;bb-sbb-ra">Jó 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>9 Nov 2026</td><td><p><a href="https://ref.ly/Job16-18;bb-sbb-ra">Jó 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Nov 2026</td><td><p><a href="https://ref.ly/Job19-21;bb-sbb-ra">Jó 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Nov 2026</td><td><p><a href="https://ref.ly/Job22-24;bb-sbb-ra">Jó 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Nov 2026</td><td><p><a href="https://ref.ly/Job25-27;bb-sbb-ra">Jó 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Nov 2026</td><td><p><a href="https://ref.ly/Job28-30;bb-sbb-ra">Jó 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Nov 2026</td><td><p><a href="https://ref.ly/Job31-33;bb-sbb-ra">Jó 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Nov 2026</td><td><p><a href="https://ref.ly/Job34-36;bb-sbb-ra">Jó 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Nov 2026</td><td><p><a href="https://ref.ly/Job37-39;bb-sbb-ra">Jó 37–39</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Nov 2026</td><td><p><a href="https://ref.ly/Job40-42;bb-sbb-ra">Jó 40–42</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>18 Nov 2026</td><td><p><a href="https://ref.ly/So1-4;bb-sbb-ra">Ct 1–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>19 Nov 2026</td><td><p><a href="https://ref.ly/So5-8;bb-sbb-ra">Ct 5–8</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Nov 2026</td><td><p><a href="https://ref.ly/Ru1-4;bb-sbb-ra">Rt 1–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Nov 2026</td><td><p><a href="https://ref.ly/La1-5;bb-sbb-ra">Lm 1–5</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Nov 2026</td><td><p><a href="https://ref.ly/Ec1-4;bb-sbb-ra">Ec 1–4</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Nov 2026</td><td><p><a href="https://ref.ly/Ec5-8;bb-sbb-ra">Ec 5–8</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Nov 2026</td><td><p><a href="https://ref.ly/Ec9-12;bb-sbb-ra">Ec 9–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Nov 2026</td><td><p><a href="https://ref.ly/Es1-3;bb-sbb-ra">Et 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Nov 2026</td><td><p><a href="https://ref.ly/Es4-6;bb-sbb-ra">Et 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Nov 2026</td><td><p><a href="https://ref.ly/Es7-10;bb-sbb-ra">Et 7–10</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>28 Nov 2026</td><td><p><a href="https://ref.ly/Da1-3;bb-sbb-ra">Dn 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Nov 2026</td><td><p><a href="https://ref.ly/Da4-6;bb-sbb-ra">Dn 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Nov 2026</td><td><p><a href="https://ref.ly/Da7-9;bb-sbb-ra">Dn 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>1 Dez 2026</td><td><p><a href="https://ref.ly/Da10-12;bb-sbb-ra">Dn 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>2 Dez 2026</td><td><p><a href="https://ref.ly/Ezr1-3;bb-sbb-ra">Ed 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>3 Dez 2026</td><td><p><a href="https://ref.ly/Ezr4-6;bb-sbb-ra">Ed 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>4 Dez 2026</td><td><p><a href="https://ref.ly/Ezr7-10;bb-sbb-ra">Ed 7–10</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>5 Dez 2026</td><td><p><a href="https://ref.ly/Ne1-3;bb-sbb-ra">Ne 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>6 Dez 2026</td><td><p><a href="https://ref.ly/Ne4-6;bb-sbb-ra">Ne 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>7 Dez 2026</td><td><p><a href="https://ref.ly/Ne7-9;bb-sbb-ra">Ne 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>8 Dez 2026</td><td><p><a href="https://ref.ly/Ne10-13;bb-sbb-ra">Ne 10–13</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>9 Dez 2026</td><td><p><a href="https://ref.ly/1Ch1-3;bb-sbb-ra">1Cr 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>10 Dez 2026</td><td><p><a href="https://ref.ly/1Ch4-6;bb-sbb-ra">1Cr 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>11 Dez 2026</td><td><p><a href="https://ref.ly/1Ch7-9;bb-sbb-ra">1Cr 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>12 Dez 2026</td><td><p><a href="https://ref.ly/1Ch10-12;bb-sbb-ra">1Cr 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>13 Dez 2026</td><td><p><a href="https://ref.ly/1Ch13-15;bb-sbb-ra">1Cr 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>14 Dez 2026</td><td><p><a href="https://ref.ly/1Ch16-18;bb-sbb-ra">1Cr 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>15 Dez 2026</td><td><p><a href="https://ref.ly/1Ch19-21;bb-sbb-ra">1Cr 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>16 Dez 2026</td><td><p><a href="https://ref.ly/1Ch22-24;bb-sbb-ra">1Cr 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>17 Dez 2026</td><td><p><a href="https://ref.ly/1Ch25-27;bb-sbb-ra">1Cr 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>18 Dez 2026</td><td><p><a href="https://ref.ly/1Ch28-29;bb-sbb-ra">1Cr 28–29</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+
+        <tr><td>[ ]</td><td>19 Dez 2026</td><td><p><a href="https://ref.ly/2Ch1-3;bb-sbb-ra">2Cr 1–3</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>20 Dez 2026</td><td><p><a href="https://ref.ly/2Ch4-6;bb-sbb-ra">2Cr 4–6</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>21 Dez 2026</td><td><p><a href="https://ref.ly/2Ch7-9;bb-sbb-ra">2Cr 7–9</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>22 Dez 2026</td><td><p><a href="https://ref.ly/2Ch10-12;bb-sbb-ra">2Cr 10–12</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>23 Dez 2026</td><td><p><a href="https://ref.ly/2Ch13-15;bb-sbb-ra">2Cr 13–15</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>24 Dez 2026</td><td><p><a href="https://ref.ly/2Ch16-18;bb-sbb-ra">2Cr 16–18</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>25 Dez 2026</td><td><p><a href="https://ref.ly/2Ch19-21;bb-sbb-ra">2Cr 19–21</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>26 Dez 2026</td><td><p><a href="https://ref.ly/2Ch22-24;bb-sbb-ra">2Cr 22–24</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>27 Dez 2026</td><td><p><a href="https://ref.ly/2Ch25-27;bb-sbb-ra">2Cr 25–27</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>28 Dez 2026</td><td><p><a href="https://ref.ly/2Ch28-30;bb-sbb-ra">2Cr 28–30</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>29 Dez 2026</td><td><p><a href="https://ref.ly/2Ch31-33;bb-sbb-ra">2Cr 31–33</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>30 Dez 2026</td><td><p><a href="https://ref.ly/2Ch34-36;bb-sbb-ra">2Cr 34–36</a> <span class="smalltextstyle">ARA</span></p></td></tr>
+        <tr><td>[ ]</td><td>31 Dez 2026</td><td><p><strong>LEITURA FINALIZADA</strong></p></td></tr>
+    </table>
+
+    <div class="actions">
+        <button class="btn" onclick="window.print()">🖨️ Imprimir PDF</button>
+        <button class="btn btn-outline" onclick="resetProgress()">Reiniciar Progresso</button>
+    </div>
+</div>
+
+<script>
+    // Seleciona todas as linhas da tabela
+    const rows = document.querySelectorAll('#readingTable tr');
+
+    // Carregar progresso salvo
+    const savedProgress = JSON.parse(localStorage.getItem('biblePlan2026')) || {};
+
+    rows.forEach((row, index) => {
+        // Ignora linhas sem checkboxes
+        const firstCell = row.cells[0];
+        if (!firstCell || firstCell.innerText !== '[ ]') return;
+
+        // Se estiver salvo como lido, marca a classe
+        if (savedProgress[index]) {
+            row.classList.add('checked');
+        }
+
+        // Adiciona evento de clique
+        row.addEventListener('click', () => {
+            row.classList.toggle('checked');
+            
+            // Salvar no localStorage
+            if (row.classList.contains('checked')) {
+                savedProgress[index] = true;
+            } else {
+                delete savedProgress[index];
+            }
+            localStorage.setItem('biblePlan2026', JSON.stringify(savedProgress));
+        });
+    });
+
+    function resetProgress() {
+        if(confirm("Tem certeza que deseja apagar todo o progresso?")) {
+            localStorage.removeItem('biblePlan2026');
+            location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
